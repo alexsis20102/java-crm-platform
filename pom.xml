@@ -24,6 +24,9 @@
         <module>infrastructure/config-server</module>
         <module>infrastructure/api-gateway</module>
 
+
+        <module>services/auth-service</module>
+
     </modules>
 
 </project>
