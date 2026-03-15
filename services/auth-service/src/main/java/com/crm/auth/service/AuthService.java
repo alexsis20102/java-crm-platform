@@ -1,9 +1,10 @@
 package com.crm.auth.service;
 
+import com.crm.auth.client.UserClient;
 import com.crm.auth.dto.LoginRequest;
 import com.crm.auth.dto.RegisterRequest;
-import com.crm.auth.entity.User;
-import com.crm.auth.repository.UserRepository;
+
+import com.crm.auth.dto.UserDto;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.crm.auth.security.JwtService;
@@ -13,34 +14,28 @@ import com.crm.auth.security.JwtService;
 @Service
 public class AuthService {
 
-    private final UserRepository userRepository;
+    private final UserClient userClient;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
-    public AuthService(UserRepository userRepository,
-                       PasswordEncoder passwordEncoder, JwtService jwtService) {
-        this.userRepository = userRepository;
+    public AuthService(UserClient userClient,
+                       PasswordEncoder passwordEncoder,
+                       JwtService jwtService) {
+        this.userClient = userClient;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
     }
 
     public void register(RegisterRequest request) {
-
-        User user = new User(
+        userClient.createUser(
                 request.getEmail(),
-                passwordEncoder.encode(request.getPassword()),
-                "USER"
+                request.getPassword()
         );
-
-        userRepository.save(user);
     }
 
     public String login(LoginRequest request) {
 
-        User user = userRepository
-                .findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
+        UserDto user = userClient.getUserByEmail(request.getEmail());
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid credentials");

@@ -12,7 +12,7 @@
         <version>1.0.0</version>
         <relativePath>../../crm-parent/pom.xml</relativePath>
     </parent>
-
+    <packaging>jar</packaging>
     <artifactId>eureka-server</artifactId>
     <name>eureka-server</name>
     <description>Eureka Service Discovery Server</description>
@@ -51,13 +51,20 @@
     </dependencies>
 
     <build>
+        <finalName>app-eureka-server</finalName>
         <plugins>
-
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>3.2.5</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
-
         </plugins>
     </build>
 

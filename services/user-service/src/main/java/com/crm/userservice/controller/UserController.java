@@ -3,7 +3,10 @@ package com.crm.userservice.controller;
 import com.crm.userservice.dto.CreateUserRequest;
 import com.crm.userservice.dto.UserDto;
 import com.crm.userservice.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
+
+
 
 import java.util.List;
 
@@ -23,8 +26,13 @@ public class UserController {
     }
 
     @PostMapping
-    public UserDto createUser(@RequestBody CreateUserRequest request) {
+    public UserDto createUser(@Valid @RequestBody CreateUserRequest request) {
         return userService.createUser(request);
+    }
+
+    @GetMapping("/email/{email}")
+    public UserDto getByEmail(@PathVariable String email) {
+        return userService.getByEmail(email);
     }
 
 }

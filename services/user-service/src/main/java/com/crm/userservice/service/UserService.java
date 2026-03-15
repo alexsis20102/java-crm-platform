@@ -13,4 +13,5 @@ public interface UserService {
 
     UserDto createUser(CreateUserRequest request);
 
+    UserDto getByEmail(String email);
 }

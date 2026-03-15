@@ -3,6 +3,7 @@ package com.crm.auth.controller;
 import com.crm.auth.dto.LoginRequest;
 import com.crm.auth.dto.RegisterRequest;
 import com.crm.auth.service.AuthService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,11 +17,9 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestBody RegisterRequest request) {
-
+    public ResponseEntity<Void> register(@RequestBody RegisterRequest request) {
         authService.register(request);
-
-        return "User registered";
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/login")
