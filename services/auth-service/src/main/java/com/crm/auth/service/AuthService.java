@@ -37,6 +37,12 @@ public class AuthService {
 
         UserDto user = userClient.getUserByEmail(request.getEmail());
 
+        System.out.println("RAW password: " + request.getPassword());
+        System.out.println("HASH from DB: " + user.getPassword());
+        System.out.println("E-mail from DB: " + user.getEmail());
+        System.out.println("Id from DB: " + user.getId());
+        System.out.println("Rolle from DB: " + user.getRole());
+
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid credentials");
         }

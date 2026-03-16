@@ -14,12 +14,12 @@ public class SecurityConfig {
         return http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
                 .authorizeExchange(exchange -> exchange
-                        .pathMatchers("/auth/**").permitAll()
+                        .pathMatchers("/auth/**", "/test").permitAll()
                         .anyExchange().authenticated()
                 )
-                .oauth2ResourceServer(oauth2 -> oauth2
+                /*.oauth2ResourceServer(oauth2 -> oauth2
                         .jwt(jwt -> {})
-                )
+                )*/
                 .build();
     }
 }

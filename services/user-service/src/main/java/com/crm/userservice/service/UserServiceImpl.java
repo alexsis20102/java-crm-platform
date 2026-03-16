@@ -28,6 +28,7 @@ public class UserServiceImpl implements UserService {
                 .map(user -> new UserDto(
                         user.getId(),
                         user.getEmail(),
+                        user.getPassword(),
                         user.getRole()))
                 .collect(Collectors.toList());
     }
@@ -45,6 +46,7 @@ public class UserServiceImpl implements UserService {
         return new UserDto(
                 savedUser.getId(),
                 savedUser.getEmail(),
+                savedUser.getPassword(),
                 savedUser.getRole());
     }
 
@@ -53,6 +55,6 @@ public class UserServiceImpl implements UserService {
         User user = repository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        return new UserDto(user.getId(), user.getEmail(), user.getRole());
+        return new UserDto(user.getId(), user.getEmail(), user.getPassword(), user.getRole());
     }
 }
