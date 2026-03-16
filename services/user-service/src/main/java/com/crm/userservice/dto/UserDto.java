@@ -7,6 +7,12 @@ public class UserDto {
     private Role role;
     private String password;
 
+    public UserDto(Long id, String email, Role role) {
+        this.id = id;
+        this.email = email;
+        this.role = role;
+    }
+
     public UserDto(Long id, String email, String password, Role role) {
         this.id = id;
         this.email = email;
