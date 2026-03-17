@@ -2,6 +2,8 @@ package com.crm.customerservice.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "customers")
 public class Customer {
@@ -25,11 +27,15 @@ public class Customer {
     private Long idUserCreate;
 
     @Column(nullable = true)
-    private String createdAt;
+    private LocalDateTime createdAt;
 
 
     public Customer() {}
 
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
 
     public Long getId() {
         return id;
@@ -39,7 +45,7 @@ public class Customer {
     public String getFirstName() { return firstName; }
     public String getLastName() { return lastName; }
     public String getPhone() { return phone; }
-    public String getCreatedAt() { return createdAt; }
+    public LocalDateTime getCreatedAt() { return createdAt; }
     public Long getIdUserCreate() { return idUserCreate; }
 
     public void setEmail(String email) {
@@ -48,7 +54,7 @@ public class Customer {
     public void setFirstName(String firstName) { this.firstName = firstName;}
     public void setLastName(String lastName) { this.lastName = lastName;}
     public void setPhone(String phone) { this.phone = phone;}
-    public void setCreatedAt(String createdAt) { this.createdAt = createdAt;}
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt;}
     public void setIdUserCreate(Long idUserCreate) { this.idUserCreate = idUserCreate;}
 
 
