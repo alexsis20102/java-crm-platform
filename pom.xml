@@ -27,6 +27,7 @@
 
         <module>services/auth-service</module>
         <module>services/user-service</module>
+        <module>services/customer-service</module>
 
     </modules>
 

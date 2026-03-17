@@ -26,7 +26,7 @@ public class UserClient {
     public void createUser(String email, String password) {
 
         webClient.post()
-                .uri("lb://user-service/users")
+                .uri("lb://user-service/users/create-user")
                 .bodyValue(new RegisterRequest(email, password))
                 .retrieve()
                 .bodyToMono(Void.class)

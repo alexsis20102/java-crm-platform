@@ -10,7 +10,8 @@ services:
     container_name: crm-mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: users_db
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - crm-network
     healthcheck:
@@ -111,6 +112,28 @@ services:
       - user-service
       - eureka-server
       - config-server
+    networks:
+      - crm-network
+
+  # ======================
+  # Customer Service
+  # ======================
+  customer-service:
+    build:
+      context: .
+      dockerfile: services/customer-service/Dockerfile
+    container_name: customer-service
+    depends_on:
+      mysql:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+      config-server:
+        condition: service_started
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/customers_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
     networks:
       - crm-network
 
