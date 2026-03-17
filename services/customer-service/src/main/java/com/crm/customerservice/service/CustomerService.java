@@ -1,5 +1,6 @@
 package com.crm.customerservice.service;
 
+import com.crm.customerservice.exception.NotFoundException;
 import com.crm.customerservice.entity.Customer;
 import com.crm.customerservice.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
@@ -37,11 +38,14 @@ public class CustomerService {
 
 
     public CustomerResponse getById(Long id) {
-        Customer customer = repository.findById(id).orElseThrow();
+        Customer customer = repository.findById(id).orElseThrow(() -> new NotFoundException("Customer with id " + id + " not found"));
         return CustomerMapper.toResponse(customer);
     }
 
     public void delete(Long id) {
+        if (!repository.existsById(id)) {
+            throw new NotFoundException("Customer with id " + id + " not found");
+        }
         repository.deleteById(id);
     }
 

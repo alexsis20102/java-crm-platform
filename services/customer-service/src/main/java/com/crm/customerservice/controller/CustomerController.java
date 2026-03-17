@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/customers")
 public class CustomerController {
@@ -18,7 +20,7 @@ public class CustomerController {
     }
 
     @PostMapping("/new-customer")
-    public CustomerResponse create(@RequestBody CustomerRequest request) {
+    public CustomerResponse create(@Valid @RequestBody CustomerRequest request) {
         Long userId = 1L;
         return service.create(request, userId);
     }
