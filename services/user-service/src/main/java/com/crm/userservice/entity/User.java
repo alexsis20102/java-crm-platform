@@ -20,7 +20,7 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private Role role = Role.USER;
 
     public User() {}
 
@@ -28,6 +28,13 @@ public class User {
         this.email = email;
         this.password = password;
         this.role = role;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (role == null) {
+            role = Role.USER;
+        }
     }
 
     public Long getId() {
