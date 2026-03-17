@@ -20,13 +20,13 @@ public class CustomerController {
     }
 
     @PostMapping("/new-customer")
-    public CustomerResponse create(@Valid @RequestBody CustomerRequest request) {
-        Long userId = 1L;
+    public CustomerResponse create(@RequestHeader("X-User-Id") Long userId, @Valid @RequestBody CustomerRequest request) {
         return service.create(request, userId);
     }
 
     @GetMapping("/get-all-customers")
-    public List<CustomerResponse> getAll() {
+    public List<CustomerResponse> getAll(@RequestHeader("X-User-Id") String userId) {
+        System.out.println("USER ID = " + userId);
         return service.getAll();
     }
 

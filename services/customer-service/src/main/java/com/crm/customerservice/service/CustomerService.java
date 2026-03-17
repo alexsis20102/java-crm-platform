@@ -32,11 +32,6 @@ public class CustomerService {
         this.repository = repository;
     }
 
-    public Customer create(Customer customer) {
-        return repository.save(customer);
-    }
-
-
     public CustomerResponse getById(Long id) {
         Customer customer = repository.findById(id).orElseThrow(() -> new NotFoundException("Customer with id " + id + " not found"));
         return CustomerMapper.toResponse(customer);
