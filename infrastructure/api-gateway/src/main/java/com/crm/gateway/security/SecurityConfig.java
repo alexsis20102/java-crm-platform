@@ -84,8 +84,11 @@ public class SecurityConfig {
                         .pathMatchers("/customers/delete/{id}")
                         .hasAnyRole("ADMIN")
 
-                        .pathMatchers("/customers/new-customer", "/get-customer/{id}")
+                        .pathMatchers("/customers/new-customer", "/customers/get-customer/{id}")
                         .hasAnyRole("ADMIN", "MANAGER", "USER")
+
+                        .pathMatchers("/customers/update-customer/{id}")
+                        .hasAnyRole("ADMIN", "MANAGER")
 
                         .pathMatchers("/customers/get-all-customers")
                         .hasAnyRole("ADMIN", "MANAGER")

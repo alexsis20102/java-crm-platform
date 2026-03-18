@@ -29,6 +29,11 @@ public class Customer {
     @Column(nullable = true)
     private LocalDateTime createdAt;
 
+    @Column(nullable = true)
+    private Long idUserUpdate;
+
+    @Column(nullable = true)
+    private LocalDateTime updatedAt;
 
     public Customer() {}
 
@@ -58,4 +63,19 @@ public class Customer {
     public void setIdUserCreate(Long idUserCreate) { this.idUserCreate = idUserCreate;}
 
 
+    public Long getIdUserUpdate() {
+        return idUserUpdate;
+    }
+
+    public void setIdUserUpdate(Long idUserUpdate) {
+        this.idUserUpdate = idUserUpdate;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }

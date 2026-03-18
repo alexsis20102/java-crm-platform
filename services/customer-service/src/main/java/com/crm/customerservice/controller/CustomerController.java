@@ -2,6 +2,7 @@ package com.crm.customerservice.controller;
 
 import com.crm.customerservice.dto.CustomerRequest;
 import com.crm.customerservice.dto.CustomerResponse;
+import com.crm.customerservice.dto.CustomerUpdateRequest;
 import com.crm.customerservice.service.CustomerService;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,15 @@ public class CustomerController {
     @PostMapping("/new-customer")
     public CustomerResponse create(@RequestHeader("X-User-Id") Long userId, @Valid @RequestBody CustomerRequest request) {
         return service.create(request, userId);
+    }
+
+    @PutMapping("/update-customer/{id}")
+    public CustomerResponse update(
+            @RequestHeader("X-User-Id") Long userId,
+            @PathVariable("id") Long id,
+            @Valid @RequestBody CustomerUpdateRequest request) {
+
+        return service.update(id, request, userId);
     }
 
     @GetMapping("/get-all-customers")
