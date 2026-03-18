@@ -58,6 +58,12 @@
             <optional>true</optional>
         </dependency>
 
+        <dependency>
+            <groupId>com.crm</groupId>
+            <artifactId>common-lib</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

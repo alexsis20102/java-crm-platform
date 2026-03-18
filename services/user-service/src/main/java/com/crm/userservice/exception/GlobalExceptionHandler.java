@@ -1,19 +1,68 @@
 package com.crm.userservice.exception;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.crm.common.exception.BusinessException;
+import com.crm.common.exception.ErrorResponse;
+import com.crm.common.enums.ErrorCode;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleValidationErrors(MethodArgumentNotValidException ex) {
+    @Value("${spring.application.name}")
+    private String serviceName;
 
-        return ResponseEntity
-                .badRequest()
-                .body(ex.getBindingResult().getAllErrors());
+    // Business exceptions
+    @ExceptionHandler(BusinessException.class)
+    public ErrorResponse handleBusiness(BusinessException ex) {
+        return new ErrorResponse(
+                ex.getMessage(),
+                ex.getStatus(),
+                serviceName,
+                ex.getErrorCode().name()
+        );
+    }
+
+    //  1. DTO validation errors (@Valid)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleValidation(MethodArgumentNotValidException ex) {
+
+        Map<String, String> errors = new HashMap<>();
+
+        ex.getBindingResult().getFieldErrors()
+                .forEach(error ->
+                        errors.put(error.getField(), error.getDefaultMessage())
+                );
+
+        return new ErrorResponse(
+                "Validation error",
+                400,
+                serviceName,
+                ErrorCode.VALIDATION_ERROR.name(),
+                errors
+        );
+    }
+
+    // fallback DB
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleGeneral() {
+        return new ErrorResponse(
+                "Internal Server Error",
+                500,
+                serviceName,
+                ErrorCode.INTERNAL_ERROR.name()
+        );
     }
 
 }

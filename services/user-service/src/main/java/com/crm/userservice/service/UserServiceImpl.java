@@ -3,6 +3,7 @@ package com.crm.userservice.service;
 import com.crm.userservice.dto.CreateUserRequest;
 import com.crm.userservice.dto.UserDto;
 import com.crm.userservice.entity.User;
+import com.crm.userservice.exception.DuplicateEmailException;
 import com.crm.userservice.mapper.UserMapper;
 import com.crm.userservice.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.crm.userservice.exception.NoUserException;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -32,6 +35,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto createUser(CreateUserRequest request) {
+
+        if (repository.existsByEmail(request.getEmail())) {
+            throw new DuplicateEmailException();
+        }
+
         User user = UserMapper.toEntity(request);
 
 
@@ -45,7 +53,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getByEmail(String email) {
         User user = repository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(NoUserException::new);
 
         return UserMapper.toDtoWithPassword(user);
     }

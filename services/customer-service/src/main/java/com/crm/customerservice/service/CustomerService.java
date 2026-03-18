@@ -1,5 +1,6 @@
 package com.crm.customerservice.service;
 
+import com.crm.customerservice.exception.DuplicateEmailException;
 import com.crm.customerservice.exception.NotFoundException;
 import com.crm.customerservice.entity.Customer;
 import com.crm.customerservice.repository.CustomerRepository;
@@ -16,6 +17,11 @@ public class CustomerService {
     private final CustomerRepository repository;
 
     public CustomerResponse create(CustomerRequest request, Long userId) {
+
+        if (repository.existsByEmail(request.getEmail())) {
+            throw new DuplicateEmailException();
+        }
+
         Customer customer = CustomerMapper.toEntity(request, userId);
         Customer saved = repository.save(customer);
         return CustomerMapper.toResponse(saved);

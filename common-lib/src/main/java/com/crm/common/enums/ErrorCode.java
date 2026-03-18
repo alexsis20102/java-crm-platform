@@ -1,0 +1,11 @@
+package com.crm.common.enums;
+
+public enum ErrorCode {
+    CUSTOMER_NOT_FOUND,
+    EMAIL_ALREADY_EXISTS,
+    VALIDATION_ERROR,
+    ACCESS_DENIED,
+    INTERNAL_ERROR,
+    AUTHENTICATION_REQUIRED,
+    USER_NOT_FOUND
+}

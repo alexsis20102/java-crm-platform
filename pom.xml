@@ -20,6 +20,7 @@
 
     <modules>
         <module>crm-parent</module>
+        <module>common-lib</module>
         <module>infrastructure/eureka-server</module>
         <module>infrastructure/config-server</module>
         <module>infrastructure/api-gateway</module>

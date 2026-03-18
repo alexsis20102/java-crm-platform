@@ -5,6 +5,7 @@ import com.crm.auth.dto.LoginRequest;
 import com.crm.auth.dto.RegisterRequest;
 
 import com.crm.auth.dto.UserDto;
+import com.crm.auth.exception.UserNotFound;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.crm.auth.security.JwtService;
@@ -44,7 +45,7 @@ public class AuthService {
         System.out.println("Role from DB: " + user.getRole());
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid credentials");
+            throw new UserNotFound();
         }
 
         return jwtService.generateToken(user.getId(), user.getEmail(), user.getRole());

@@ -1,13 +1,17 @@
 package com.crm.customerservice.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import com.crm.common.exception.BusinessException;
 
-@ResponseStatus(value = HttpStatus.NOT_FOUND)
-public class NotFoundException extends RuntimeException {
+import com.crm.common.enums.ErrorCode;
+
+public class NotFoundException extends BusinessException {
 
     public NotFoundException(String message) {
-        super(message);
+        super(
+                ErrorCode.CUSTOMER_NOT_FOUND,
+                message,
+                404
+        );
     }
 
 }
