@@ -9,6 +9,7 @@ import com.crm.userservice.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,10 +19,12 @@ import com.crm.userservice.exception.NoUserException;
 public class UserServiceImpl implements UserService {
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
+    private final LogProducer logProducer;
 
-    public UserServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository repository, PasswordEncoder passwordEncoder, LogProducer logProducer) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
+        this.logProducer = logProducer;
     }
 
     @Override
@@ -39,15 +42,37 @@ public class UserServiceImpl implements UserService {
         if (repository.existsByEmail(request.getEmail())) {
             throw new DuplicateEmailException();
         }
+        try {
 
-        User user = UserMapper.toEntity(request);
+            try {
+                logProducer.sendLog("INFO", "A new user has been created");
+            } catch (Exception e) {
+                System.err.println("Error processing log event: " + e.getMessage());
+            }
+
+            User user = UserMapper.toEntity(request);
 
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        User savedUser = repository.save(user);
+            User savedUser = repository.save(user);
 
-        return UserMapper.toDto(savedUser);
+            return UserMapper.toDto(savedUser);
+        }
+        catch (Exception e) {
+
+            try {
+
+                logProducer.sendLog("ERROR", "An attempt to create a new user failed.");
+
+            } catch (Exception e1) {
+                System.err.println("Error processing log event: " + e1.getMessage());
+            }
+
+            System.err.println("Error processing log event: " + e.getMessage());
+        }
+
+        return UserMapper.toDto(new User());
     }
 
     @Override

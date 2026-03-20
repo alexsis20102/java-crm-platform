@@ -1,6 +1,6 @@
 package com.crm.logging.mapper;
 
-import com.crm.logging.dto.LogEvent;
+import com.crm.common.dto.LogEvent;
 import com.crm.logging.entity.LogEntry;
 
 import java.time.LocalDateTime;

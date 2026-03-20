@@ -1,6 +1,6 @@
 package com.crm.logging.service;
 
-import com.crm.logging.dto.LogEvent;
+import com.crm.common.dto.LogEvent;
 import com.crm.logging.entity.LogEntry;
 import com.crm.logging.mapper.LogMapper;
 import org.springframework.kafka.annotation.KafkaListener;
