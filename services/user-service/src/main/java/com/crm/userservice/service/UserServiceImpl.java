@@ -3,6 +3,7 @@ package com.crm.userservice.service;
 import com.crm.userservice.dto.CreateUserRequest;
 import com.crm.userservice.dto.UserDto;
 import com.crm.userservice.entity.User;
+import com.crm.common.enums.LoggingCode;
 import com.crm.userservice.exception.DuplicateEmailException;
 import com.crm.userservice.mapper.UserMapper;
 import com.crm.userservice.repository.UserRepository;
@@ -45,7 +46,7 @@ public class UserServiceImpl implements UserService {
         try {
 
             try {
-                logProducer.sendLog("INFO", "A new user has been created");
+                logProducer.sendLog(LoggingCode.INFO.name(), "A new user has been created");
             } catch (Exception e) {
                 System.err.println("Error processing log event: " + e.getMessage());
             }
@@ -63,7 +64,7 @@ public class UserServiceImpl implements UserService {
 
             try {
 
-                logProducer.sendLog("ERROR", "An attempt to create a new user failed.");
+                logProducer.sendLog(LoggingCode.ERROR.name(), "An attempt to create a new user failed.");
 
             } catch (Exception e1) {
                 System.err.println("Error processing log event: " + e1.getMessage());
