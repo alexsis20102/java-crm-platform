@@ -75,6 +75,7 @@ public class SecurityConfig {
 
                 .authorizeExchange(exchange -> exchange
                         .pathMatchers("/auth/**", "/test").permitAll()
+                        .pathMatchers("/logging/**").permitAll()
                         .pathMatchers("/users/email/{email}").permitAll()
                         .pathMatchers("/users").permitAll()
 
@@ -82,6 +83,9 @@ public class SecurityConfig {
                         .hasAnyRole("ADMIN", "MANAGER")
 
                         .pathMatchers("/customers/delete/{id}")
+                        .hasAnyRole("ADMIN")
+
+                        .pathMatchers("/logs/trace/{traceId}", "/logs/service/{serviceName}", "/logs/get-all-logs")
                         .hasAnyRole("ADMIN")
 
                         .pathMatchers("/customers/new-customer", "/customers/get-customer/{id}")
