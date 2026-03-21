@@ -1,5 +1,5 @@
 package com.crm.userservice.dto;
-import com.crm.userservice.enums.Role;
+import com.crm.common.enums.Role;
 
 public class UserDto {
     private Long id;

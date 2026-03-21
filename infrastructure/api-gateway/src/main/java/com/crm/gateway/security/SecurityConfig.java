@@ -4,6 +4,8 @@ package com.crm.gateway.security;
 import com.crm.common.enums.ErrorCode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import com.crm.common.enums.Role;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
@@ -81,22 +83,22 @@ public class SecurityConfig {
                         .pathMatchers("/users").permitAll()
 
                         .pathMatchers("/users/get-all-users")
-                        .hasAnyRole("ADMIN", "MANAGER")
+                        .hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name())
 
                         .pathMatchers("/customers/delete/{id}")
-                        .hasAnyRole("ADMIN")
+                        .hasAnyRole(Role.ADMIN.name())
 
                         .pathMatchers("/logs/trace/{traceId}", "/logs/service/{serviceName}", "/logs/get-all-logs")
-                        .hasAnyRole("ADMIN")
+                        .hasAnyRole(Role.ADMIN.name())
 
                         .pathMatchers("/customers/new-customer", "/customers/get-customer/{id}")
-                        .hasAnyRole("ADMIN", "MANAGER", "USER")
+                        .hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name(), Role.USER.name())
 
                         .pathMatchers("/customers/update-customer/{id}")
-                        .hasAnyRole("ADMIN", "MANAGER")
+                        .hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name())
 
                         .pathMatchers("/customers/get-all-customers")
-                        .hasAnyRole("ADMIN", "MANAGER")
+                        .hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name())
 
                         .anyExchange().authenticated()
 

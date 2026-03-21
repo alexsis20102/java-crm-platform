@@ -1,6 +1,6 @@
 package com.crm.userservice.entity;
 
-import com.crm.userservice.enums.Role;
+import com.crm.common.enums.Role;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 

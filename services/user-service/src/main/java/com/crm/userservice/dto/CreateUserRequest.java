@@ -2,7 +2,7 @@ package com.crm.userservice.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import com.crm.userservice.enums.Role;
+import com.crm.common.enums.Role;
 
 public class CreateUserRequest {
     @Email
