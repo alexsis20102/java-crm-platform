@@ -78,6 +78,7 @@ public class SecurityConfig {
                 .authorizeExchange(exchange -> exchange
                         .pathMatchers("/auth/**", "/test").permitAll()
                         .pathMatchers("/products/test").permitAll()
+                        .pathMatchers("/orders/test").permitAll()
                         .pathMatchers("/logging/**").permitAll()
                         .pathMatchers("/users/email/{email}").permitAll()
                         .pathMatchers("/users").permitAll()
