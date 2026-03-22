@@ -87,14 +87,21 @@ public class SecurityConfig {
 
                         .pathMatchers("/customers/delete/{id}")
                         .hasAnyRole(Role.ADMIN.name())
+                        .pathMatchers("/products/delete/{id}")
+                        .hasAnyRole(Role.ADMIN.name())
 
                         .pathMatchers("/logs/trace/{traceId}", "/logs/service/{serviceName}", "/logs/get-all-logs")
                         .hasAnyRole(Role.ADMIN.name())
 
                         .pathMatchers("/customers/new-customer", "/customers/get-customer/{id}")
                         .hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name(), Role.USER.name())
+                        .pathMatchers("/products/new-product", "/products/get-product/{id}", "/products/get-all-products")
+                        .hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name(), Role.USER.name())
 
                         .pathMatchers("/customers/update-customer/{id}")
+                        .hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name())
+
+                        .pathMatchers("/products/update-product/{id}")
                         .hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name())
 
                         .pathMatchers("/customers/get-all-customers")
