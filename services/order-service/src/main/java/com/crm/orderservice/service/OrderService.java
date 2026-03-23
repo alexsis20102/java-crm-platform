@@ -1,5 +1,6 @@
 package com.crm.orderservice.service;
 import com.crm.common.enums.LoggingCode;
+import com.crm.common.dto.OrderCreatedEvent;
 import com.crm.orderservice.client.ProductClient;
 import com.crm.orderservice.client.ProductResponse;
 import com.crm.orderservice.dto.OrderRequest;
@@ -21,11 +22,13 @@ public class OrderService {
     private final OrderRepository repository;
     private final ProductClient productClient;
     private final LogProducer logProducer;
+    private final OrderEventProducer orderEventProducer;
 
-    public OrderService(OrderRepository repository, ProductClient productClient, LogProducer logProducer) {
+    public OrderService(OrderRepository repository, ProductClient productClient, LogProducer logProducer, OrderEventProducer orderEventProducer) {
         this.repository = repository;
         this.productClient = productClient;
         this.logProducer = logProducer;
+        this.orderEventProducer = orderEventProducer;
     }
 
     public OrderResponse create(OrderRequest request, Long userId) {
@@ -59,6 +62,18 @@ public class OrderService {
                 logProducer.sendLog(LoggingCode.INFO.name(), "A new order has been created");
             } catch (Exception e) {
                 System.err.println("Error processing log event: " + e.getMessage());
+            }
+
+            try {
+                OrderCreatedEvent event = new OrderCreatedEvent();
+                event.setOrderId(saved.getId());
+                event.setCustomerId(saved.getCustomerId());
+                event.setTotalAmount(saved.getTotalAmount());
+                event.setCreatedId(saved.getCreatedBy());
+
+                orderEventProducer.sendOrderCreated(event);
+            }catch (Exception e) {
+                System.err.println("Kafka event processing error: " + e.getMessage());
             }
 
             return OrderMapper.toResponse(saved);
