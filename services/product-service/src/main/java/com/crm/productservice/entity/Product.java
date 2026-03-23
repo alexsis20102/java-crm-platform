@@ -1,5 +1,5 @@
 package com.crm.productservice.entity;
-import com.crm.common.enums.Role;
+
 import com.crm.common.enums.StatusProduct;
 import jakarta.persistence.*;
 

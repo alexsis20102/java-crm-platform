@@ -98,6 +98,10 @@ public class SecurityConfig {
                         .hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name(), Role.USER.name())
                         .pathMatchers("/products/new-product", "/products/get-product/{id}", "/products/get-all-products")
                         .hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name(), Role.USER.name())
+                        .pathMatchers("/orders/create-order", "/orders/get-order/{id}")
+                        .hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name(), Role.USER.name())
+                        .pathMatchers("/orders/get-all-orders", "/orders/cancel-order/{id}" )
+                        .hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name())
 
                         .pathMatchers("/customers/update-customer/{id}")
                         .hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name())
