@@ -79,6 +79,7 @@ public class SecurityConfig {
                         .pathMatchers("/auth/**", "/test").permitAll()
                         .pathMatchers("/products/test").permitAll()
                         .pathMatchers("/orders/test").permitAll()
+                        .pathMatchers("/billing/test").permitAll()
                         .pathMatchers("/logging/**").permitAll()
                         .pathMatchers("/users/email/{email}").permitAll()
                         .pathMatchers("/users").permitAll()
