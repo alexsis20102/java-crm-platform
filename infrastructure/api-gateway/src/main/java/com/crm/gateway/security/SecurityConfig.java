@@ -95,6 +95,11 @@ public class SecurityConfig {
                         .pathMatchers("/logs/trace/{traceId}", "/logs/service/{serviceName}", "/logs/get-all-logs")
                         .hasAnyRole(Role.ADMIN.name())
 
+                        .pathMatchers("/billing/get-all-invoices", "/billing/get-invoice/{id}")
+                        .hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name(), Role.USER.name())
+                        .pathMatchers("/billing/cancel-invoice/{id}")
+                        .hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name())
+
                         .pathMatchers("/customers/new-customer", "/customers/get-customer/{id}")
                         .hasAnyRole(Role.ADMIN.name(), Role.MANAGER.name(), Role.USER.name())
                         .pathMatchers("/products/new-product", "/products/get-product/{id}", "/products/get-all-products")

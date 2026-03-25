@@ -17,6 +17,10 @@ spring:
 
   kafka:
     bootstrap-servers: kafka:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
     consumer:
       group-id: billing-group
       auto-offset-reset: earliest
@@ -29,6 +33,7 @@ spring:
         spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
         spring.json.trusted.packages: "*"
         spring.json.value.default.type: com.crm.common.dto.OrderCreatedEvent
+
 
 eureka:
   client:
