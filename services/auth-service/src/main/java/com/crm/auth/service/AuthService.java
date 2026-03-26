@@ -1,11 +1,13 @@
 package com.crm.auth.service;
 
 import com.crm.auth.client.UserClient;
+import com.crm.auth.dto.CreateUserRequest;
 import com.crm.auth.dto.LoginRequest;
 import com.crm.auth.dto.RegisterRequest;
 
 import com.crm.auth.dto.UserDto;
 import com.crm.auth.exception.UserNotFound;
+import com.crm.common.enums.Role;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.crm.auth.security.JwtService;
@@ -28,13 +30,20 @@ public class AuthService {
     }
 
     public void register(RegisterRequest request) {
-        userClient.createUser(
-                request.getEmail(),
-                request.getPassword()
-        );
+        System.out.println("CALLING USER SERVICE WITH HTTP");
+
+        CreateUserRequest userRequest = new CreateUserRequest();
+        userRequest.setEmail(request.getEmail());
+        userRequest.setPassword(request.getPassword());
+        userRequest.setRole(Role.USER);
+
+        userClient.createUser(userRequest);
+
     }
 
     public String login(LoginRequest request) {
+
+        System.out.println("LOGIN USER SERVICE WITH HTTP");
 
         UserDto user = userClient.getUserByEmail(request.getEmail());
 
