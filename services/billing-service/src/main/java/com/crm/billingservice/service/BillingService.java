@@ -4,6 +4,7 @@ import com.crm.billingservice.entity.Invoice;
 import com.crm.billingservice.exception.NotFoundException;
 import com.crm.billingservice.mapper.InvoiceMapper;
 import com.crm.billingservice.repository.InvoiceRepository;
+import com.crm.common.dto.InvoiceCreatedEvent;
 import com.crm.common.dto.OrderCreatedEvent;
 import com.crm.common.enums.InvoiceStatus;
 import com.crm.common.enums.LoggingCode;
@@ -17,10 +18,12 @@ public class BillingService {
 
     private final InvoiceRepository repository;
     private final LogProducer logProducer;
+    private final BillingEventProducer eventProducer;
 
-    public BillingService(InvoiceRepository repository, LogProducer logProducer) {
+    public BillingService(InvoiceRepository repository, LogProducer logProducer, BillingEventProducer eventProducer) {
         this.repository = repository;
         this.logProducer = logProducer;
+        this.eventProducer = eventProducer;
     }
 
     public List<InvoiceResponse> getAll() {
@@ -39,6 +42,17 @@ public class BillingService {
         try {
             Invoice invoice = InvoiceMapper.toEntity(event);
             repository.save(invoice);
+
+            InvoiceCreatedEvent invoiceEvent = new InvoiceCreatedEvent(
+                    invoice.getId(),
+                    invoice.getOrderId(),
+                    invoice.getCustomerId(),
+                    invoice.getAmount(),
+                    "customer@email.com",
+                    invoice.getCreatedAt()
+            );
+
+            eventProducer.sendInvoiceCreated(invoiceEvent);
 
             try {
                 logProducer.sendLog(LoggingCode.INFO.name(), "A new invoice has been created");
