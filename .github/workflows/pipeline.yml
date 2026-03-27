@@ -56,7 +56,7 @@ jobs:
 
       - name: Build & Push Gateway
         run: |
-          docker build -t $IMAGE_PREFIX/api-gateway:latest ./infrastructure/api-gateway
+          docker build -t $IMAGE_PREFIX/api-gateway:latest -f infrastructure/api-gateway/Dockerfile .
           docker push $IMAGE_PREFIX/api-gateway:latest
 
       - name: Build & Push Config Server
