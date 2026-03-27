@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN mvn clean package -DskipTests
+RUN mvn -f /app/pom.xml clean package -DskipTests
 
 FROM eclipse-temurin:23-jdk
 
