@@ -300,7 +300,14 @@
         }
       ],
       "title": "Latency",
-      "type": "timeseries"
+      "type": "timeseries",
+      "links": [
+        {
+          "title": "View Traces",
+          "url": "/explore?left={\"datasource\":\"Zipkin\"}",
+          "targetBlank": true
+        }
+      ]
     },
     {
       "datasource": {
