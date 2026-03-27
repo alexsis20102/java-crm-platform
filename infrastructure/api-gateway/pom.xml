@@ -8,7 +8,7 @@
         <groupId>com.crm</groupId>
         <artifactId>crm-parent</artifactId>
         <version>1.0.0</version>
-        <relativePath>../../crm-parent/pom.xml</relativePath>
+        <relativePath/>
     </parent>
 
 
