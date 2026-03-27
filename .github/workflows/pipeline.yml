@@ -48,7 +48,7 @@ jobs:
           password: ${{ secrets.DOCKER_TOKEN }}
 
       - name: Set image prefix
-        run: echo "IMAGE_PREFIX=${{ secrets.DOCKER_USERNAME }}/javarestapi" >> $GITHUB_ENV
+        run: echo "IMAGE_PREFIX=${{ secrets.DOCKER_USERNAME }}" >> $GITHUB_ENV
 
       # ======================
       # Docker builds
