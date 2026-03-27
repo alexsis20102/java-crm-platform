@@ -6,6 +6,22 @@ The project demonstrates modern backend engineering practices used in production
 
 ---
 
+# 🆕 Latest Updates
+
+* ✅ Added **Product Service** (product management service)
+* 📊 Added monitoring and tracing:
+
+    * Prometheus — http://localhost:9090
+    * Zipkin — http://localhost:9411
+    * Grafana — http://localhost:3000 (login: admin / password: admin)
+* 🐳 Updated system startup via Docker:
+
+  ```bash
+  docker compose up
+  ```
+
+---
+
 # 🎯 Project Goal
 
 The main goal of this project is to demonstrate a proper approach to building microservices architecture:
@@ -51,10 +67,6 @@ The main goal of this project is to demonstrate a proper approach to building mi
 * Docker Compose
 * GitHub Actions (CI/CD)
 
-## API Documentation
-
-* Swagger / OpenAPI
-
 ---
 
 # 🏗 System Architecture
@@ -71,7 +83,7 @@ Each service:
 
 # 📊 Architecture Diagram
 
-```id="9a1x4p"
+```id="9r8d0h"
                                 CLIENT
                                    |
                            +---------------+
@@ -150,11 +162,11 @@ This enables:
 
 ## Config Server
 
-Centralized configuration management for all services:
+Centralized configuration management:
 
 * database settings
 * Kafka configuration
-* JWT secrets
+* JWT
 * environment variables
 
 ---
@@ -209,6 +221,14 @@ Responsibilities:
 
 ---
 
+## Product Service
+
+* product management
+* stock tracking
+* product status management
+
+---
+
 ## Order Service
 
 * order creation
@@ -253,7 +273,7 @@ Redis is used for:
 
 # 📁 Repository Structure
 
-```id="r6s2m1"
+```id="4j9k2p"
 crm-platform
 
 ├ infrastructure
@@ -265,6 +285,7 @@ crm-platform
 │ ├ auth-service
 │ ├ user-service
 │ ├ customer-service
+│ ├ product-service
 │ ├ order-service
 │ ├ billing-service
 │ ├ notification-service
@@ -276,7 +297,10 @@ crm-platform
 ├ docker
 │ ├ kafka
 │ ├ mysql
-│ └ redis
+│ ├ redis
+│ ├ prometheus
+│ ├ grafana
+│ └ zipkin
 │
 ├ docker-compose.yml
 └ README.md
@@ -286,7 +310,7 @@ crm-platform
 
 # ▶️ Build the Project
 
-```bash id="3t0c3x"
+```bash id="q7c2d1"
 mvn clean install
 ```
 
@@ -294,8 +318,8 @@ mvn clean install
 
 # 🐳 Run the System
 
-```bash id="u5b2v8"
-docker compose up --build
+```bash id="a1n6x5"
+docker compose up
 ```
 
 All services will start automatically.
@@ -304,82 +328,91 @@ All services will start automatically.
 
 # 🌐 Useful Links
 
-* http://localhost:8761/ — Eureka Dashboard
+* http://localhost:8761/ — Eureka
 * http://localhost:8081/ — phpMyAdmin
 * http://localhost:8888/actuator/health — Config Server
-
----
-
-# 📘 API Documentation
-
-```id="6k8g1p"
-http://localhost:{port}/swagger-ui.html
-```
+* http://localhost:9090 — Prometheus
+* http://localhost:9411 — Zipkin
+* http://localhost:3000 — Grafana
 
 ---
 
 # 🧪 Testing via PowerShell
 
-## Registration
+## Product Service
 
-```powershell id="k9d2w1"
-Invoke-RestMethod -Method POST -Uri "http://localhost:8088/auth/register" `
--ContentType "application/json" `
--Body '{"email":"test@test.com","password":"1234"}'
-```
-
-## Authentication
-
-```powershell id="n2f7q4"
-$token = Invoke-RestMethod -Method POST -Uri "http://localhost:8088/auth/login" `
--ContentType "application/json" `
--Body '{"email":"test@test.com","password":"1234"}'
-```
-
-## Get All Users (ADMIN, MANAGER)
-
-```powershell id="p8x4s2"
-Invoke-RestMethod -Method GET -Uri "http://localhost:8088/users/get-all-users" `
--Headers @{Authorization="Bearer $token"}
-```
-
-## Create Customer
-
-```powershell id="w1m9z7"
-Invoke-RestMethod -Method POST -Uri "http://localhost:8088/customers/new-customer" `
+```powershell id="z8f3w1"
+Invoke-RestMethod -Method POST -Uri "http://localhost:8088/products/new-product" `
 -Headers @{Authorization="Bearer $token"} `
 -ContentType "application/json" `
--Body '{"firstName": "Ivan", "lastName": "Ivanov", "email": "ivan2@test.com", "phone": "+49123456789"}'
+-Body '{"name": "First test product", "description": "Description product", "stock": "10", "price": "3.99", "status": "ACTIVE"}'
 ```
 
-## Get All Customers
-
-```powershell id="b3c7k5"
-Invoke-RestMethod -Method GET -Uri "http://localhost:8088/customers/get-all-customers" `
+```powershell id="u6d2s4"
+Invoke-RestMethod -Method GET -Uri "http://localhost:8088/products/get-all-products" `
 -Headers @{Authorization="Bearer $token"}
 ```
 
-## Get Customer by ID
-
-```powershell id="z5v1r8"
-Invoke-RestMethod -Method GET -Uri "http://localhost:8088/customers/get-customer/1" `
+```powershell id="m9p5r7"
+Invoke-RestMethod -Method GET -Uri "http://localhost:8088/products/get-product/1" `
 -Headers @{Authorization="Bearer $token"}
 ```
 
-## Delete Customer (ADMIN)
-
-```powershell id="y7l2d6"
-Invoke-RestMethod -Method DELETE -Uri "http://localhost:8088/customers/delete/1" `
+```powershell id="l2x8q6"
+Invoke-RestMethod -Method DELETE -Uri "http://localhost:8088/products/delete/1" `
 -Headers @{Authorization="Bearer $token"}
 ```
 
-## Update Customer (ADMIN, MANAGER)
-
-```powershell id="q4n8t3"
-Invoke-RestMethod -Method PUT -Uri "http://localhost:8088/customers/update-customer/1" `
+```powershell id="k4v1n3"
+Invoke-RestMethod -Method PUT -Uri "http://localhost:8088/products/update-product/1" `
 -Headers @{Authorization="Bearer $token"} `
 -ContentType "application/json" `
--Body '{"firstName": "Ivan", "lastName": "Petrov", "email": "newmail@test.com", "phone": "+49111111111"}'
+-Body '{"name": "Test product", "description": "Description product Test", "stock": "2", "price": "2.99", "status": "DEACTIVATE"}'
+```
+
+---
+
+## Order Service
+
+```powershell id="b7t9c2"
+Invoke-RestMethod -Method POST -Uri "http://localhost:8088/orders/create-order" `
+-Headers @{Authorization="Bearer $token"} `
+-ContentType "application/json" `
+-Body '{"customerId": 1, "items": [{"productId": 1, "quantity": 2},{"productId": 2,"quantity": 1}]}'
+```
+
+```powershell id="n5h3j8"
+Invoke-RestMethod -Method GET -Uri "http://localhost:8088/orders/get-order/1" `
+-Headers @{Authorization="Bearer $token"}
+```
+
+```powershell id="r1y6u4"
+Invoke-RestMethod -Method GET -Uri "http://localhost:8088/orders/get-all-orders" `
+-Headers @{Authorization="Bearer $token"}
+```
+
+```powershell id="e8q2w9"
+Invoke-RestMethod -Method PUT -Uri "http://localhost:8088/orders/cancel-order/1" `
+-Headers @{Authorization="Bearer $token"}
+```
+
+---
+
+## Billing Service
+
+```powershell id="s3p7k1"
+Invoke-RestMethod -Method GET -Uri "http://localhost:8088/billing/get-invoice/1" `
+-Headers @{Authorization="Bearer $token"}
+```
+
+```powershell id="t6m4x2"
+Invoke-RestMethod -Method GET -Uri "http://localhost:8088/billing/get-all-invoices" `
+-Headers @{Authorization="Bearer $token"}
+```
+
+```powershell id="w9d8f5"
+Invoke-RestMethod -Method PUT -Uri "http://localhost:8088/billing/cancel-invoice/1" `
+-Headers @{Authorization="Bearer $token"}
 ```
 
 ---
@@ -388,7 +421,7 @@ Invoke-RestMethod -Method PUT -Uri "http://localhost:8088/customers/update-custo
 
 Implemented using GitHub Actions:
 
-* build services
+* build project
 * run tests
 * build Docker images
 * publish containers
@@ -397,9 +430,7 @@ Implemented using GitHub Actions:
 
 # 🚀 Future Improvements
 
-* Kubernetes deployment
+* Kubernetes
 * ELK (centralized logging)
-* distributed tracing
-* Prometheus + Grafana monitoring
 
 ---
