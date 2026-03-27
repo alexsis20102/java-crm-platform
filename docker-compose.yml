@@ -78,9 +78,7 @@ services:
   # Eureka Server
   # ======================
   eureka-server:
-    build:
-      context: .
-      dockerfile: infrastructure/eureka-server/Dockerfile
+    image: alexsis20102/eureka-server:latest
     container_name: eureka-server
     ports:
       - "8761:8761"
@@ -91,9 +89,7 @@ services:
   # Config Server
   # ======================
   config-server:
-    build:
-      context: .
-      dockerfile: infrastructure/config-server/Dockerfile
+    image: alexsis20102/config-server:latest
     container_name: config-server
     ports:
       - "8888:8888"
@@ -106,9 +102,7 @@ services:
   # API Gateway
   # ======================
   api-gateway:
-    build:
-      context: .
-      dockerfile: infrastructure/api-gateway/Dockerfile
+    image: alexsis20102/api-gateway:latest
     container_name: api-gateway
     ports:
       - "8088:8088"
@@ -122,9 +116,7 @@ services:
   # User Service
   # ======================
   user-service:
-    build:
-      context: .
-      dockerfile: services/user-service/Dockerfile
+    image: alexsis20102/user-service:latest
     container_name: user-service
     depends_on:
       mysql:
@@ -144,9 +136,7 @@ services:
   # Auth Service
   # ======================
   auth-service:
-    build:
-      context: .
-      dockerfile: services/auth-service/Dockerfile
+    image: alexsis20102/auth-service:latest
     container_name: auth-service
     depends_on:
       - user-service
@@ -159,9 +149,7 @@ services:
   # Customer Service
   # ======================
   customer-service:
-    build:
-      context: .
-      dockerfile: services/customer-service/Dockerfile
+    image: alexsis20102/customer-service:latest
     container_name: customer-service
     depends_on:
       mysql:
@@ -181,9 +169,7 @@ services:
   # Logging Service
   # ======================
   logging-service:
-    build:
-      context: .
-      dockerfile: logging-service/Dockerfile
+    image: alexsis20102/logging-service:latest
     container_name: logging-service
     depends_on:
       mysql:
@@ -205,9 +191,7 @@ services:
   # Product Service
   # ======================
   product-service:
-    build:
-      context: .
-      dockerfile: services/product-service/Dockerfile
+    image: alexsis20102/product-service:latest
     container_name: product-service
     depends_on:
       mysql:
@@ -227,9 +211,7 @@ services:
   # Order Service
   # ======================
   order-service:
-    build:
-      context: .
-      dockerfile: services/order-service/Dockerfile
+    image: alexsis20102/order-service:latest
     container_name: order-service
     depends_on:
       mysql:
@@ -249,9 +231,7 @@ services:
   # billing Service
   # ======================
   billing-service:
-    build:
-      context: .
-      dockerfile: services/billing-service/Dockerfile
+    image: alexsis20102/billing-service:latest
     container_name: billing-service
     depends_on:
       mysql:
@@ -271,9 +251,7 @@ services:
   # Notification Service
   # ======================
   notification-service:
-    build:
-      context: .
-      dockerfile: services/notification-service/Dockerfile
+    image: alexsis20102/notification-service:latest
     container_name: notification-service
     depends_on:
       mysql:
